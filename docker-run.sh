@@ -10,7 +10,5 @@ CONTAINER_PATH=/home/developer/projects
 
 docker run -it \
     -v $(pwd)/ParlAI:$CONTAINER_PATH/ParlAI:rw \
-    -v $(pwd)/models:$CONTAINER_PATH/ParlAI/models:rw \
-    -v $(pwd)/ParlAI/data:$CONTAINER_PATH/ParlAI/data:rw \
     -v $(pwd)/scripts:$CONTAINER_PATH/scripts:rw \
     --name $CONTAINER_IMG $CONTAINER_NAME

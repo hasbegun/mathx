@@ -7,7 +7,7 @@ FROM ${BASE_IMAGE}
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update --fix-missing && \
-    apt-get install tzdata -qy \
+    apt-get install -qy tzdata && \
     apt-get install -qy --no-install-recommends \
     build-essential \
     python3-pip python3-dev \
@@ -17,7 +17,7 @@ RUN apt-get update --fix-missing && \
     openmpi-common \
     gfortran \
     git wget cmake sudo vim\
-    libgoogle-perftools-dev
+    libgoogle-perftools-dev pkg-config
 
 ### disable this for debug
 #&& rm -rf /var/lib/apt/lists/*
@@ -25,7 +25,6 @@ RUN apt-get update --fix-missing && \
 # install pip3 tools
 RUN pip3 install setuptools Cython wheel setuptools_rust
 
-# install pycuda
 # PyCUDA
 ENV PATH="/usr/local/cuda/bin:${PATH}"
 ENV LD_LIBRARY_PATH="/usr/local/cuda/lib64:${LD_LIBRARY_PATH}"
@@ -33,6 +32,8 @@ RUN echo "$PATH" && echo "$LD_LIBRARY_PATH"
 RUN pip3 install pycuda --verbose
 
 WORKDIR workspace
+RUN pip3 install python3-scipy python3-numpy scikit-learn
+
 # install google sentencepiece
 RUN git clone https://github.com/google/sentencepiece.git
 RUN cd sentencepiece && mkdir build && cd build && \

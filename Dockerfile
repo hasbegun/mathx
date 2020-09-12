@@ -3,7 +3,7 @@ FROM ubuntu:18.04
 RUN apt-get update --fix-missing && apt-get install tzdata -qy &&\
 	apt-get install -qy build-essential \
 	cmake git wget \
-    python3-numpy python3-scipy python3-pip python3-setuptools \
+    python3-pip python3-setuptools \
     libjpeg-dev libtiff5-dev libpng-dev \
     pkg-config sudo vim
 
@@ -24,7 +24,7 @@ ENV HOME /home/developer
 ENV USER developer
 USER developer
 
-RUN git clone https://github.com/facebookresearch/ParlAI.git && \
+RUN git clone git@github.com:hasbegun/ParlAI.git && \
     cd ParlAI && \
     pip3 install -r requirements.txt && \
     sudo python3 setup.py develop && \

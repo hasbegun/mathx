@@ -1,0 +1,68 @@
+# nvidia base is from https://ngc.nvidia.com/catalog/containers/nvidia:l4t-base
+
+ARG BASE_IMAGE=nvcr.io/nvidia/l4t-ml:r32.4.3-py3
+FROM ${BASE_IMAGE}
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update --fix-missing && \
+    apt-get install -qy tzdata && \
+    apt-get install -qy --no-install-recommends \
+    python3-pip python3-dev python3-setuptools \
+    libopenblas-dev \
+    libopenmpi2 openmpi-bin openmpi-common \
+    gfortran \
+    git wget cmake sudo vim pkg-config \
+    libgoogle-perftools-dev curl
+
+RUN pip3 install Cython wheel setuptools_rust
+
+WORKDIR workspace
+
+# PyCUDA
+ENV PATH="/usr/local/cuda/bin:${PATH}"
+ENV LD_LIBRARY_PATH="/usr/local/cuda/lib64:${LD_LIBRARY_PATH}"
+RUN echo "$PATH" && echo "$LD_LIBRARY_PATH"
+RUN pip3 install pycuda --verbose
+
+#install rust
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:$PATH"
+
+# install google sentencepiece
+RUN git clone https://github.com/google/sentencepiece.git
+RUN cd sentencepiece && mkdir build && cd build && \
+    cmake .. && make -j $(nproc) && make install && \
+    cd ../python && python3 setup.py install
+
+RUN git clone https://github.com/hasbegun/ParlAI.git && \
+    cd ParlAI && \
+    pip3 install -r requirements.txt && \
+    sudo python3 setup.py develop
+
+# clean up
+WORKDIR workspace
+RUN rm -rf sentencepiece ParlAI
+
+# Create user "developer" with sudo powers
+RUN useradd -m developer && \
+    usermod -aG sudo developer && \
+    echo '%sudo ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers && \
+    cp /root/.bashrc /home/developer/ && \
+    mkdir /home/developer/data && \
+    chown -R --from=root developer /home/developer
+
+# Use C.UTF-8 locale to avoid issues with ASCII encoding
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
+
+WORKDIR /home/developer/projects
+ENV HOME /home/developer
+ENV USER developer
+USER developer
+ENV PATH /home/developer/.local/bin:$PATH
+# Avoid first use of sudo warning. c.f. https://askubuntu.com/a/22614/781671
+RUN touch $HOME/.sudo_as_admin_successful
+
+CMD ['/bin/bash']
+

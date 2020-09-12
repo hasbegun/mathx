@@ -1,4 +1,4 @@
-MODEL_PATH=/home/developer/projects/models
+MODEL_PATH=/home/developer/projects/ParlAI/models/babi
 
 echo "display examples from bAbI 10k task 1"
 echo "====================================="

@@ -45,13 +45,14 @@ RUN pip3 install pycuda --verbose
 WORKDIR workspace
 #RUN pip3 install python3-scipy python3-numpy scikit-learn
 # install pip3 tools
-RUN pip3 install Cython wheel setuptools_rust
+RUN pip3 install Cython wheel
 
 # install google sentencepiece
 RUN git clone https://github.com/google/sentencepiece.git
 RUN cd sentencepiece && mkdir build && cd build && \
     cmake .. && make -j $(nproc) && make install && \
     cd ../python && python3 setup.py install
+RUN pip3 install setuptools_rust
 RUN pip3 install transformers
 
 RUN git clone https://github.com/hasbegun/ParlAI.git && \

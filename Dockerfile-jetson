@@ -36,7 +36,7 @@ RUN apt-get update --fix-missing && \
 #&& rm -rf /var/lib/apt/lists/*
 
 # install pip3 tools
-RUN pip3 install setuptools Cython wheel setuptools_rust
+RUN pip3 install setuptools Cython wheel setuptools_rust transformers
 
 # PyCUDA
 ENV PATH="/usr/local/cuda/bin:${PATH}"

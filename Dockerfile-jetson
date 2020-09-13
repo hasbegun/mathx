@@ -1,20 +1,6 @@
 # nvidia base is from https://ngc.nvidia.com/catalog/containers/nvidia:l4t-base
-# l4t-ml:r32.4.3-py3
-# TensorFlow 1.15
-# PyTorch v1.6.0-rc1
-# torchvision v0.7.0-rc1
-# torchaudio v0.6.0-rc1
-# onnx 1.7.0
-# CuPy 8.0.0
-# numpy 1.19.0
-# numba 0.50.0
-# pandas 1.0.5
-# scipy 1.5.0
-# scikit-learn 0.23.1
-# JupyterLab 2.1.5
 
-#ARG BASE_IMAGE=nvcr.io/nvidia/l4t-pytorch:r32.4.3-pth1.6-py3
-ARG BASE_IMAGE=nvcr.io/nvidia/l4t-ml:r32.4.3-py3
+ARG BASE_IMAGE=nvcr.io/nvidia/l4t-base:r32.3.1
 FROM ${BASE_IMAGE}
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -33,33 +19,36 @@ RUN apt-get update --fix-missing && \
     git wget cmake sudo vim\
     libgoogle-perftools-dev pkg-config
 
+RUN pip3 install Cython wheel setuptools_rust
+
 ### disable this for debug
 #&& rm -rf /var/lib/apt/lists/*
+RUN wget https://github.com/pytorch/pytorch/archive/v1.6.0.tar.gz && \
+    tar zxvf v1.6.0 && \
+    cd pytorch-1.6.0
 
 # PyCUDA
-ENV PATH="/usr/local/cuda/bin:${PATH}"
-ENV LD_LIBRARY_PATH="/usr/local/cuda/lib64:${LD_LIBRARY_PATH}"
-RUN echo "$PATH" && echo "$LD_LIBRARY_PATH"
-RUN pip3 install pycuda --verbose
+#ENV PATH="/usr/local/cuda/bin:${PATH}"
+#ENV LD_LIBRARY_PATH="/usr/local/cuda/lib64:${LD_LIBRARY_PATH}"
+#RUN echo "$PATH" && echo "$LD_LIBRARY_PATH"
+#RUN pip3 install pycuda --verbose
 
 WORKDIR workspace
 #RUN pip3 install python3-scipy python3-numpy scikit-learn
 # install pip3 tools
-RUN pip3 install Cython wheel
 
 # install google sentencepiece
-RUN git clone https://github.com/google/sentencepiece.git
-RUN cd sentencepiece && mkdir build && cd build && \
-    cmake .. && make -j $(nproc) && make install && \
-    cd ../python && python3 setup.py install
-RUN pip3 install setuptools_rust
-RUN pip3 install transformers
+#RUN git clone https://github.com/google/sentencepiece.git
+#RUN cd sentencepiece && mkdir build && cd build && \
+#    cmake .. && make -j $(nproc) && make install && \
+#    cd ../python && python3 setup.py install
+#RUN pip3 install transformers
 
-RUN git clone https://github.com/hasbegun/ParlAI.git && \
-    cd ParlAI && \
-    pip3 install -r requirements.txt && \
-    sudo python3 setup.py develop && \
-    cd .. && sudo rm -rf ParlAI
+#RUN git clone https://github.com/hasbegun/ParlAI.git && \
+#    cd ParlAI && \
+#    pip3 install -r requirements.txt && \
+#    sudo python3 setup.py develop && \
+#    cd .. && sudo rm -rf ParlAI
 
 RUN rm -rf sentencepiece
 

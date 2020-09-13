@@ -1,6 +1,7 @@
 # nvidia base is from https://ngc.nvidia.com/catalog/containers/nvidia:l4t-base
 
-ARG BASE_IMAGE=nvcr.io/nvidia/l4t-pytorch:r32.4.3-pth1.6-py3
+#ARG BASE_IMAGE=nvcr.io/nvidia/l4t-pytorch:r32.4.3-pth1.6-py3
+ARG BASE_IMAGE=nvcr.io/nvidia/l4t-ml:r32.4.3-py3
 FROM ${BASE_IMAGE}
 
 ENV DEBIAN_FRONTEND=noninteractive

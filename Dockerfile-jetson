@@ -1,4 +1,17 @@
 # nvidia base is from https://ngc.nvidia.com/catalog/containers/nvidia:l4t-base
+# l4t-ml:r32.4.3-py3
+# TensorFlow 1.15
+# PyTorch v1.6.0-rc1
+# torchvision v0.7.0-rc1
+# torchaudio v0.6.0-rc1
+# onnx 1.7.0
+# CuPy 8.0.0
+# numpy 1.19.0
+# numba 0.50.0
+# pandas 1.0.5
+# scipy 1.5.0
+# scikit-learn 0.23.1
+# JupyterLab 2.1.5
 
 #ARG BASE_IMAGE=nvcr.io/nvidia/l4t-pytorch:r32.4.3-pth1.6-py3
 ARG BASE_IMAGE=nvcr.io/nvidia/l4t-ml:r32.4.3-py3
@@ -32,7 +45,7 @@ RUN echo "$PATH" && echo "$LD_LIBRARY_PATH"
 RUN pip3 install pycuda --verbose
 
 WORKDIR workspace
-RUN pip3 install python3-scipy python3-numpy scikit-learn
+#RUN pip3 install python3-scipy python3-numpy scikit-learn
 
 # install google sentencepiece
 RUN git clone https://github.com/google/sentencepiece.git

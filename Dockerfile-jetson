@@ -8,23 +8,25 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update --fix-missing && \
     apt-get install -qy tzdata && \
     apt-get install -qy --no-install-recommends \
-    build-essential \
-    python3-pip python3-dev \
-    python3-setuptools \
+    python3-pip python3-dev python3-setuptools \
     libopenblas-dev \
-    libopenmpi2 \
-    openmpi-bin \
-    openmpi-common \
+    libopenmpi2 openmpi-bin openmpi-common \
     gfortran \
-    git wget cmake sudo vim\
-    libgoogle-perftools-dev pkg-config
+    git wget cmake sudo vim pkg-config \
+    libgoogle-perftools-dev \
+
+### build options
+ENV USE_NCCL=0
+ENV USE_QNNPACK=0
+ENV USE_PYTORCH_QNNPACK=0
+ENV TORCH_CUDA_ARCH_LIST="10.0"
 
 RUN pip3 install Cython wheel setuptools_rust
 
 ### disable this for debug
 #&& rm -rf /var/lib/apt/lists/*
 RUN wget https://github.com/pytorch/pytorch/archive/v1.6.0.tar.gz && \
-    tar zxvf v1.6.0 && \
+    tar zxvf v1.6.0.tar.gz && \
     cd pytorch-1.6.0
 
 # PyCUDA

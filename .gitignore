@@ -1,3 +1,4 @@
 ParlAI/**
 models/**
 .idea/
+*.out

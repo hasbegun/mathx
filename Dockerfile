@@ -24,7 +24,7 @@ ENV HOME /home/developer
 ENV USER developer
 USER developer
 
-RUN git clone git@github.com:hasbegun/ParlAI.git && \
+RUN git clone https://github.com/hasbegun/ParlAI.git && \
     cd ParlAI && \
     pip3 install -r requirements.txt && \
     sudo python3 setup.py develop && \

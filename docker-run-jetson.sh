@@ -8,10 +8,10 @@ fi
 
 CONTAINER_PATH=/home/developer/projects
 
-nvidia-docker run -it --rm \
+nvidia-docker run -d \
     --runtime nvidia \
     --gpus="all" \
-    --memory="10g" --memory-swap="11g" \
+    --memory="13g" --memory-swap="14g" \
     -v $(pwd)/ParlAI:$CONTAINER_PATH/ParlAI:rw \
     -v $(pwd)/scripts:$CONTAINER_PATH/scripts:rw \
     --network host \

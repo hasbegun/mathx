@@ -5,7 +5,7 @@ RUN apt-get update --fix-missing && apt-get install tzdata -qy &&\
 	cmake git wget \
     python3-pip python3-setuptools \
     libjpeg-dev libtiff5-dev libpng-dev \
-    pkg-config sudo vim
+    pkg-config sudo vim curl
 
 # add user
 RUN useradd -m developer && \
@@ -33,5 +33,7 @@ RUN git clone https://github.com/hasbegun/ParlAI.git && \
 ENV PATH /home/developer/.local/bin:$PATH
 # Avoid first use of sudo warning. c.f. https://askubuntu.com/a/22614/781671
 RUN touch $HOME/.sudo_as_admin_successful
+
+EXPOSE 8080
 
 CMD ["/bin/bash"]

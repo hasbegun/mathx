@@ -10,7 +10,9 @@ CONTAINER_PATH=/home/developer/projects
 
 nvidia-docker run -it --rm \
     --runtime nvidia \
+    --gpus="all" \
+    --memory="10g" --memory-swap="11g" \
     -v $(pwd)/ParlAI:$CONTAINER_PATH/ParlAI:rw \
     -v $(pwd)/scripts:$CONTAINER_PATH/scripts:rw \
     --network host \
-    --name $CONTAINER_IMG $CONTAINER_NAME /bin/bash
+    --name $CONTAINER_NAME $CONTAINER_IMG /bin/bash

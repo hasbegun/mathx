@@ -42,7 +42,7 @@ RUN git clone https://github.com/hasbegun/ParlAI.git && \
 
 # clean up
 WORKDIR workspace
-RUN rm -rf sentencepiece ParlAI
+RUN cd /workspace && rm -rf sentencepiece ParlAI
 
 # Create user "developer" with sudo powers
 RUN useradd -m developer && \

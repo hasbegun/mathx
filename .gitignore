@@ -1,4 +1,6 @@
 ParlAI/**
 models/**
 .idea/
+.vscode/
 *.out
+*.log

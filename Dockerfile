@@ -34,6 +34,4 @@ ENV PATH /home/developer/.local/bin:$PATH
 # Avoid first use of sudo warning. c.f. https://askubuntu.com/a/22614/781671
 RUN touch $HOME/.sudo_as_admin_successful
 
-EXPOSE 8080
-
 CMD ["/bin/bash"]

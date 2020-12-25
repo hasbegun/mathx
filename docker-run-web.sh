@@ -10,7 +10,6 @@ else
     CONTAINER_NAME=$1
 fi
 PORT=8080
-PORT2=8888
 WS_PORT=34596
 CONTAINER_PATH=/home/developer/projects
 
@@ -18,6 +17,5 @@ docker run -it \
     -v $(pwd)/ParlAI:$CONTAINER_PATH/ParlAI:rw \
     -v $(pwd)/scripts:$CONTAINER_PATH/scripts:rw \
     -p $PORT:$PORT \
-    -p $PORT2:$PORT2 \
     -p $WS_PORT:$WS_PORT \
     --name $CONTAINER_NAME $CONTAINER_IMG
